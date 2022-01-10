@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CurVer='version 0.1, 2022-01-08'
+CurVer='version 0.2, 2022-01-10'
 
 NUM_FLOWS=50
 sec=30
@@ -18,6 +18,7 @@ Usage() {
 		  --duration <time in sec>      - Set the duration of the program.
 		  --pps <Packets per second>    - Set the number of packets per second.
 		  --bytes <Number of bytes>     - Set the number of bytes per packet.
+		  --outfile <Filename>			- Set the output file name.
 	EOF
 }
 
@@ -71,6 +72,9 @@ while [[ -n $1 ]]; do
 				*)
 					bytes_per_packet=$1 ;;
 			esac ;;
+		--outfile)
+			shift
+			outfile=$1;;
 		-*)
 			Err 1 'Incorrect argument(s) specified.' ;;
 		*)
@@ -79,10 +83,14 @@ while [[ -n $1 ]]; do
 	shift
 done
 
+if [[ -z $outfile ]]; then
+	echo "aaa"
+	outfile="out_f${NUM_FLOWS}_pps${pack_per_second}_b${bytes_per_packet}_s${sec}.drc"
+fi
 
 echo -e "0.0 LISTEN UDP 5000\n$(($sec+10)).0 IGNORE UDP 5000\n" > script_listen_t.mgn
 
-mgen input script_listen_t.mgn output out_f${NUM_FLOWS}_pps${pack_per_second}_b${bytes_per_packet}_s${sec}.drc &> /dev/null &
+mgen input script_listen_t.mgn output ${outfile} &> /dev/null &
 
 sleep 5
 
