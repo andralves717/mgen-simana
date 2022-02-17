@@ -7,6 +7,8 @@ sec=30
 pack_per_second=10
 bytes_per_packet=256
 
+ulimit -n 65536
+
 Usage() {
 	while read; do
 		printf '%s\n' "$REPLY"
@@ -112,6 +114,6 @@ sleep 8
 
 rm script_send_t.mgn script_listen_t.mgn
 
-analyze_latency_jitter_mgen -v nflows=$NUM_FLOWS pps=$pack_per_second dur=$sec size=$bytes_per_packet $outfile
+analyze_latency_jitter_mgen -v nflows=$NUM_FLOWS -v pps=$pack_per_second -v dur=$sec -v size=$bytes_per_packet $outfile
 
-rm $outfile
+# rm $outfile

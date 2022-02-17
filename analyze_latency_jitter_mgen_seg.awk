@@ -12,8 +12,8 @@ function mgen_ts_to_microseconds(ts) {
 function abs(v) {return v < 0 ? -v : v}
 
 BEGIN {
-  first = 1;
-  # time_to_wait = 10000000;
+  first = 3;
+  time_to_wait = 10000000;
   # seq_init = pps * 10;
 }
 
@@ -25,91 +25,91 @@ $2 ~ /RECV/ {
   split($8, sent, />/);
   sent_time = mgen_ts_to_microseconds(sent[2]);
 
-  # # if(first == 3){
-  # #   # time_to_start = recv_time + time_to_wait;
-  # #   first--;
-  # # } else
-  # if (first == 2){
-  #   # if(recv_time >= time_to_start){
-  #   if(seq[2] >= seq_init) {
-  #     first--;
-  #   }
-  # } else{
+  if(first == 3){
+    time_to_start = recv_time + time_to_wait;
+    first--;
+  } else if (first == 2){
+    if(recv_time >= time_to_start){
+    # if(seq[2] >= seq_init) {
+      first--;
+    }
+  } else{
 
-  # maybe split this into a function with problem handling
-  if (first == 0) {
-    prev_latency[flow[2]] = latency;
-  } 
+    # maybe split this into a function with problem handling
+    if (first == 0) {
+      prev_latency[flow[2]] = latency;
+    } 
 
-  # keep package count to be independent of reordered packets
-  count[flow[2]]++;
-
-
-  latency = recv_time - sent_time;
+    # keep package count to be independent of reordered packets
+    count[flow[2]]++;
 
 
-  if (min_latency[flow[2]] == "") {
-    min_latency[flow[2]] = latency;
-  } else if (min_latency[flow[2]] > latency) {
-    min_latency[flow[2]] = latency;
-  }
-
-  if (max_latency[flow[2]] == "") {
-    max_latency[flow[2]] = latency;
-  } else if (max_latency[flow[2]] < latency) {
-    max_latency[flow[2]] = latency;
-  }
-
-  # keep running average latency
-  if (avg_latency[flow[2]] == "") {
-    avg_latency[flow[2]] = latency;
-  } else {
-  # new avg latency = (old avg latency * (n-1) + latency) / n
-    avg_latency[flow[2]] = (avg_latency[flow[2]] * (count[flow[2]] - 1) + latency) / count[flow[2]];
-  }
-
-  if (first == 0) {
-    jitter = abs(latency - prev_latency[flow[2]]);
+    latency = recv_time - sent_time;
   
 
-    if (min_jitter[flow[2]] == "") {
-      min_jitter[flow[2]] = jitter;
-    } else if (min_jitter[flow[2]] > jitter) {
-      min_jitter[flow[2]] = jitter;
+    if (min_latency[flow[2]] == "") {
+      min_latency[flow[2]] = latency;
+    } else if (min_latency[flow[2]] > latency) {
+      min_latency[flow[2]] = latency;
     }
 
-    if (max_jitter[flow[2]] == "") {
-      max_jitter[flow[2]] = jitter;
-    } else if (max_jitter[flow[2]] < jitter) {
-      max_jitter[flow[2]] = jitter;
+    if (max_latency[flow[2]] == "") {
+      max_latency[flow[2]] = latency;
+    } else if (max_latency[flow[2]] < latency) {
+      max_latency[flow[2]] = latency;
     }
 
-    if (avg_jitter[flow[2]] == "") {
-      avg_jitter[flow[2]] = jitter;
+    # keep running average latency
+    if (avg_latency[flow[2]] == "") {
+      avg_latency[flow[2]] = latency;
     } else {
-      avg_jitter[flow[2]] = (avg_jitter[flow[2]] * (count[flow[2]] - 2) + jitter) / (count[flow[2]]-1);
+    # new avg latency = (old avg latency * (n-1) + latency) / n
+      avg_latency[flow[2]] = (avg_latency[flow[2]] * (count[flow[2]] - 1) + latency) / count[flow[2]];
     }
 
-  }
-  if (last_flow == ""){
-    last_flow = flow[2];
-  } else if (last_flow < flow[2]) {
-    last_flow = flow[2];
-  }
+    if (first == 0) {
+      jitter = abs(latency - prev_latency[flow[2]]);
+    
 
-  if (flows[flow[2]] == "") {
-    min[flow[2]] = seq[2];
-    max[flow[2]] = seq[2];
-  } else {
-    if (seq[2] < min[flow[2]]) {
+      if (min_jitter[flow[2]] == "") {
+        min_jitter[flow[2]] = jitter;
+      } else if (min_jitter[flow[2]] > jitter) {
+        min_jitter[flow[2]] = jitter;
+      }
+
+      if (max_jitter[flow[2]] == "") {
+        max_jitter[flow[2]] = jitter;
+      } else if (max_jitter[flow[2]] < jitter) {
+        max_jitter[flow[2]] = jitter;
+      }
+
+      if (avg_jitter[flow[2]] == "") {
+        avg_jitter[flow[2]] = jitter;
+      } else {
+        avg_jitter[flow[2]] = (avg_jitter[flow[2]] * (count[flow[2]] - 2) + jitter) / (count[flow[2]]-1);
+      }
+
+    }
+    if (last_flow == ""){
+      last_flow = flow[2];
+    } else if (last_flow < flow[2]) {
+      last_flow = flow[2];
+    }
+
+    if (flows[flow[2]] == "") {
       min[flow[2]] = seq[2];
-    }
-    if (seq[2] > max[flow[2]]) {
       max[flow[2]] = seq[2];
+    } else {
+      if (seq[2] < min[flow[2]]) {
+        min[flow[2]] = seq[2];
+      }
+      if (seq[2] > max[flow[2]]) {
+        max[flow[2]] = seq[2];
+      }
     }
+    flows[flow[2]]++;
+    first = 0;
   }
-  flows[flow[2]]++;
-  first = 0;
 }
 
 # print statistics
@@ -148,7 +148,7 @@ END {
   total_avg_jitter  = total_avg_jitter/nflows; 
   min_seq = max_seq = 2;
   if (nflows != "" && pps != "" && dur != ""){
-    total = (nflows * (pps*dur+1) -1 );
+    total = (nflows * (pps*(dur-10)+1) -1 );
   } else {
     total_en = 1;
   }
