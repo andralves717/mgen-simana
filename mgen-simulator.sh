@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CurVer='version 0.3, 2022-01-10'
+CurVer='version 0.4, 2022-02-17'
 
 NUM_FLOWS=50
 sec=30
@@ -95,7 +95,7 @@ if [[ $outfile == */* ]]; then
 	fi
 fi
 
-echo -e "0.0 LISTEN UDP 5000\n$(($sec+10)).0 IGNORE UDP 5000\n" > script_listen_t.mgn
+echo -e "0.0 LISTEN UDP 5000\n$(($sec+100)).0 IGNORE UDP 5000\n" > script_listen_t.mgn
 
 mgen input script_listen_t.mgn output ${outfile} &> /dev/null &
 
@@ -103,17 +103,17 @@ sleep 5
 
 for i in $(seq ${NUM_FLOWS})
 do
-    echo -e "0.0 ON $i UDP SRC 5001 DST 127.0.0.1/5000 PERIODIC [$pack_per_second $bytes_per_packet]\n$sec.0 OFF $i" >> script_send_t.mgn
+    echo -e "60.0 ON $i UDP SRC 5001 DST 127.0.0.1/5000 PERIODIC [$pack_per_second $bytes_per_packet]\n$(($sec+60)).0 OFF $i" >> script_send_t.mgn
 done
 
 
 
 mgen input script_send_t.mgn &> /dev/null
 
-sleep 8
+sleep 45
 
 rm script_send_t.mgn script_listen_t.mgn
 
-analyze_latency_jitter_mgen -v nflows=$NUM_FLOWS -v pps=$pack_per_second -v dur=$sec -v size=$bytes_per_packet $outfile
+# analyze_latency_jitter_mgen -v nflows=$NUM_FLOWS -v pps=$pack_per_second -v dur=$sec -v size=$bytes_per_packet $outfile
 
 # rm $outfile

@@ -1,5 +1,8 @@
 #! /usr/bin/awk -f
 
+# used with -v nflows= -v pps= -v dur= -v size=
+# to get number of flows, packet per second, duration and packet size. 
+
 # based on https://github.com/fg-networking/mgen-tools flow-latency-analyzer
 
 
