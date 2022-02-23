@@ -2,7 +2,8 @@
 
 if [[ ! ":$PATH:" == *":$HOME/.local/bin:"* ]]; then
     touch $HOME/.pam_environment
-    echo "PATH DEFAULT=\${PATH}:/home/@{PAM_USER}/.local/bin" >> $HOME/.pam_environment
+    mkdir -p $HOME/.local/bin
+    echo "PATH DEFAULT=\${PATH}:$HOME/.local/bin" >> $HOME/.pam_environment
     echo "Relog and the rerun ./mgen-simulator-install.sh"
 
 else
