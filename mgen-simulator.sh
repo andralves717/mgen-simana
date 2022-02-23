@@ -7,7 +7,8 @@ sec=30
 pack_per_second=10
 bytes_per_packet=256
 destination=127.0.0.1
-port=5000
+port-src=5000
+port-dst=5000
 server= true
 client= true
 keep_drc= false
@@ -28,7 +29,8 @@ Usage() {
 		  --pps <Packets per second>    - Set the number of packets per second.
 		  --bytes <Number of bytes>     - Set the number of bytes per packet.
 		  --destination <IP address>	- Set the destination of the packet.
-		  --port <port>					- Set the port.
+		  --port-src <port>				- Set the source port.
+		  --port-dst <port>				- Set the destination port.
 		  --outfile <Filename>			- Set the output file name.
 	EOF
 }
@@ -70,7 +72,6 @@ while [[ -n $1 ]]; do
 			shift
 			case $1 in
 				''|*[!0-9]*)
-                # ! [[ $1 =~ ^[[:digit:]]+$ ]];
 					Err 1 'Incorrect number of flows type provided, must be an integer.' ;;
 				*)
                     NUM_FLOWS=$1 ;;
@@ -105,13 +106,21 @@ while [[ -n $1 ]]; do
 		--destination)
 			shift
 			destination=$1;;
-		--port)
+		--port-src)
 			shift
 			case $1 in
 				''|*[!0-9]*)
 					Err 1 'Incorrect match type provided, must be an integer.' ;;
 				*)
-					port=$1 ;;
+					port-src=$1 ;;
+			esac ;;
+		--port-dst)
+			shift
+			case $1 in
+				''|*[!0-9]*)
+					Err 1 'Incorrect match type provided, must be an integer.' ;;
+				*)
+					port-dst=$1 ;;
 			esac ;;
 		-*)
 			Err 1 'Incorrect argument(s) specified.' ;;
@@ -133,7 +142,7 @@ if [[ client ]]; then
 		fi
 	fi
 
-	echo -e "0.0 LISTEN UDP $port\n$(($sec+100)).0 IGNORE UDP $port\n" > script_listen_t.mgn
+	echo -e "0.0 LISTEN UDP ${port-dst}\n$(($sec+100)).0 IGNORE UDP ${port-dst}\n" > script_listen_t.mgn
 
 	mgen input script_listen_t.mgn output ${outfile} &> /dev/null &
 
@@ -145,7 +154,7 @@ if [[ server ]]; then
 
 	for i in $(seq ${NUM_FLOWS})
 	do
-		echo -e "60.0 ON $i UDP SRC 5001 DST $destination/$port PERIODIC [$pack_per_second $bytes_per_packet]\n$(($sec+60)).0 OFF $i" >> script_send_t.mgn
+		echo -e "60.0 ON $i UDP SRC ${port-src} DST $destination/${port-dst} PERIODIC [$pack_per_second $bytes_per_packet]\n$(($sec+60)).0 OFF $i" >> script_send_t.mgn
 	done
 
 	mgen input script_send_t.mgn &> /dev/null
