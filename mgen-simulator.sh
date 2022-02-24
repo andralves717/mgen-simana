@@ -132,7 +132,7 @@ done
 
 if [[ client ]]; then
 
-	if [[ -z $outfile]]; then
+	if [[ -z $outfile ]]; then
 		outfile="./out_f${NUM_FLOWS}_pps${pack_per_second}_b${bytes_per_packet}_s${sec}.drc"
 	fi
 
