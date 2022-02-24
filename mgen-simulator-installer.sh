@@ -1,13 +1,19 @@
 #!/usr/bin/env bash
 
-if [[ ! ":$PATH:" == *":$HOME/.local/bin:"* ]]; then
+INSTALL_PATH=$HOME/.local/bin
+
+if [ "$EUID" -e 0 ]; then
+    INSTALL_PATH=/bin
+fi
+
+if [[ ! ":$PATH:" == *":$INSTALL_PATH:"* ]]; then
     touch $HOME/.pam_environment
-    mkdir -p $HOME/.local/bin
-    echo "PATH DEFAULT=\${PATH}:$HOME/.local/bin" >> $HOME/.pam_environment
+    mkdir -p $INSTALL_PATH
+    echo "PATH DEFAULT=\${PATH}:$INSTALL_PATH" >> $HOME/.pam_environment
     echo "Relog and the rerun ./mgen-simulator-install.sh"
 
 else
-    [[ ! -d "$HOME/.local/bin" ]] && mkdir -p "$HOME/.local/bin"
+    [[ ! -d "$INSTALL_PATH" ]] && mkdir -p "$INSTALL_PATH"
 
 
     chmod +x mgen-simulator.sh
@@ -15,8 +21,8 @@ else
     chmod +x analyze_latency_jitter_mgen_seq.awk
     chmod +x analyze_latency_jitter_mgen_seg.awk
 
-    cp mgen-simulator.sh $HOME/.local/bin/mgen-simulator
-    cp analyze_latency_jitter_mgen.awk $HOME/.local/bin/analyze_latency_jitter_mgen
-    cp analyze_latency_jitter_mgen_seq.awk $HOME/.local/bin/analyze_latency_jitter_mgen_seq
-    cp analyze_latency_jitter_mgen_seg.awk $HOME/.local/bin/analyze_latency_jitter_mgen_seg
+    cp mgen-simulator.sh $INSTALL_PATH/mgen-simulator
+    cp analyze_latency_jitter_mgen.awk $INSTALL_PATH/analyze_latency_jitter_mgen
+    cp analyze_latency_jitter_mgen_seq.awk $INSTALL_PATH/analyze_latency_jitter_mgen_seq
+    cp analyze_latency_jitter_mgen_seg.awk $INSTALL_PATH/analyze_latency_jitter_mgen_seg
 fi
