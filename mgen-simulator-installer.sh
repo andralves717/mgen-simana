@@ -2,7 +2,7 @@
 
 INSTALL_PATH=$HOME/.local/bin
 
-if [ "$EUID" -e 0 ]; then
+if [ "$EUID" -eq 0 ]; then
     INSTALL_PATH=/bin
 fi
 
