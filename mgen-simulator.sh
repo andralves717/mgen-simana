@@ -163,13 +163,16 @@ fi
 
 sleep 40
 
-rm script_send_t.mgn script_listen_t.mgn
-
 if [[ "$client" = true ]]; then
+	rm script_listen_t
 
 	analyze_latency_jitter_mgen_seq -v nflows=$NUM_FLOWS -v pps=$pack_per_second -v dur=$sec -v size=$bytes_per_packet $outfile
 
 	if [[ "$keep_drc" = false ]]; then
 		rm $outfile
 	fi
+fi
+
+if [[ "$server" = true ]]; then
+	rm script_send_t.mgn
 fi
