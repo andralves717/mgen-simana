@@ -165,6 +165,11 @@ fi
 sleep 40
 
 if [[ "$client" = true ]]; then
+
+	if [[ "$server" = false ]]; then
+		sleep 100
+	fi
+
 	rm script_listen_t.mgn
 
 	analyze_latency_jitter_mgen_seq -v nflows="$NUM_FLOWS" -v pps="$pack_per_second" -v dur="$sec" -v size="$bytes_per_packet" "$outfile"
