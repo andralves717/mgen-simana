@@ -144,7 +144,8 @@ if [[ "$client" = true ]]; then
 
 	echo -e "0.0 LISTEN UDP ${port_dst}\n$(($sec+100)).0 IGNORE UDP ${port_dst}\n" > script_listen_t.mgn
 
-	mgen input script_listen_t.mgn output ${outfile} &> /dev/null &
+	# mgen input script_listen_t.mgn output ${outfile} &> /dev/null &
+	mgen input script_listen_t.mgn output &
 
 fi
 
