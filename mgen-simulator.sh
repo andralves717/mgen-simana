@@ -53,14 +53,14 @@ while [[ -n $1 ]]; do
 			shift
 			case $1 in
 				c)
-					client= true
-					server= false;;
+					client=true
+					server=false;;
 				s)
-					client= false
-					server= true;;
+					client=false
+					server=true;;
 				b)
-					client= true
-					server= true;;
+					client=true
+					server=true;;
 				*)
 					Err 1 'Incorrect type of server. Must be Client, Server or Both.';;
 			esac ;;
@@ -130,7 +130,7 @@ while [[ -n $1 ]]; do
 	shift
 done
 
-if [[ $client ]]; then
+if [[ "$client" = true ]]; then
 
 	if [[ -z $outfile ]]; then
 		outfile="./out_f${NUM_FLOWS}_pps${pack_per_second}_b${bytes_per_packet}_s${sec}.drc"
@@ -150,7 +150,7 @@ fi
 
 sleep 10
 
-if [[ $server ]]; then
+if [[ "$server" = true ]]; then
 
 	for i in $(seq ${NUM_FLOWS})
 	do
@@ -165,11 +165,11 @@ sleep 40
 
 rm script_send_t.mgn script_listen_t.mgn
 
-if [[ $client ]]; then
+if [[ "$client" = true ]]; then
 
 	analyze_latency_jitter_mgen_seq -v nflows=$NUM_FLOWS -v pps=$pack_per_second -v dur=$sec -v size=$bytes_per_packet $outfile
 
-	if [[ ! $keep_drc ]]; then
+	if [[ "$keep_drc" = false ]]; then
 		rm $outfile
 	fi
 fi
