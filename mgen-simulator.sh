@@ -37,7 +37,7 @@ Usage() {
 
 Err() {
 	printf 'Err: %s\n' "$2" 1>&2
-	(( $1 > 0 )) && exit $1
+	(( $1 > 0 )) && exit "$1"
 }
 
 
@@ -142,7 +142,7 @@ if [[ "$client" = true ]]; then
 		fi
 	fi
 
-	echo -e "0.0 LISTEN UDP ${port_dst}\n$(($sec+100)).0 IGNORE UDP ${port_dst}\n" > script_listen_t.mgn
+	echo -e "0.0 LISTEN UDP ${port_dst}\n$((sec+100)).0 IGNORE UDP ${port_dst}\n" > script_listen_t.mgn
 
 	mgen input script_listen_t.mgn output "$outfile" &> /dev/null &
 	# mgen input script_listen_t.mgn
@@ -153,7 +153,7 @@ sleep 10
 
 if [[ "$server" = true ]]; then
 
-	for i in $(seq ${NUM_FLOWS})
+	for i in $(seq "${NUM_FLOWS}")
 	do
 		echo -e "60.0 ON $i UDP SRC ${port_src} DST $destination/${port_dst} PERIODIC [$pack_per_second $bytes_per_packet]\n$((sec+60)).0 OFF $i" >> script_send_t.mgn
 	done
@@ -167,10 +167,10 @@ sleep 40
 if [[ "$client" = true ]]; then
 	rm script_listen_t.mgn
 
-	analyze_latency_jitter_mgen_seq -v nflows=$NUM_FLOWS -v pps=$pack_per_second -v dur=$sec -v size=$bytes_per_packet $outfile
+	analyze_latency_jitter_mgen_seq -v nflows="$NUM_FLOWS" -v pps="$pack_per_second" -v dur="$sec" -v size="$bytes_per_packet" "$outfile"
 
 	if [[ "$keep_drc" = false ]]; then
-		rm $outfile
+		rm "$outfile"
 	fi
 fi
 
