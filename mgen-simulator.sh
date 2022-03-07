@@ -9,9 +9,9 @@ bytes_per_packet=256
 destination=127.0.0.1
 port_src=5000
 port_dst=5000
-server= true
-client= true
-keep_drc= false
+server=true
+client=true
+keep_drc=false
 
 ulimit -n 65536
 
@@ -66,7 +66,7 @@ while [[ -n $1 ]]; do
 			esac ;;
 
 		--keep-log)
-			keep_drc = true ;;
+			keep_drc=true ;;
 
 		--flows)
 			shift
@@ -130,7 +130,7 @@ while [[ -n $1 ]]; do
 	shift
 done
 
-if [[ client ]]; then
+if [[ $client ]]; then
 
 	if [[ -z $outfile ]]; then
 		outfile="./out_f${NUM_FLOWS}_pps${pack_per_second}_b${bytes_per_packet}_s${sec}.drc"
@@ -150,11 +150,11 @@ fi
 
 sleep 10
 
-if [[ server ]]; then
+if [[ $server ]]; then
 
 	for i in $(seq ${NUM_FLOWS})
 	do
-		echo -e "60.0 ON $i UDP SRC ${port_src} DST $destination/${port_dst} PERIODIC [$pack_per_second $bytes_per_packet]\n$(($sec+60)).0 OFF $i" >> script_send_t.mgn
+		echo -e "60.0 ON $i UDP SRC ${port_src} DST $destination/${port_dst} PERIODIC [$pack_per_second $bytes_per_packet]\n$((sec+60)).0 OFF $i" >> script_send_t.mgn
 	done
 
 	mgen input script_send_t.mgn &> /dev/null
@@ -165,7 +165,7 @@ sleep 40
 
 rm script_send_t.mgn script_listen_t.mgn
 
-if [[ client ]]; then
+if [[ $client ]]; then
 
 	analyze_latency_jitter_mgen_seq -v nflows=$NUM_FLOWS -v pps=$pack_per_second -v dur=$sec -v size=$bytes_per_packet $outfile
 
