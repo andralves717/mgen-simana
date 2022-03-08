@@ -1,4 +1,4 @@
-#! /usr/bin/awk -f
+#! /usr/bin/gawk -f
 
 # used with -v nflows= -v pps= -v dur= -v size=
 # to get number of flows, packet per second, duration and packet size. 

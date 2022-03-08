@@ -1,4 +1,4 @@
-#! /usr/bin/awk -f
+#! /usr/bin/gawk -f
 
 # based on https://github.com/fg-networking/mgen-tools flow-latency-analyzer
 
