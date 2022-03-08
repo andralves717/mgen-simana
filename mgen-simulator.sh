@@ -142,7 +142,7 @@ if [[ "$client" = true ]]; then
 		fi
 	fi
 
-	echo -e "0.0 LISTEN UDP ${port_dst}\n$((sec+100)).0 IGNORE UDP ${port_dst}\n" > script_listen_t.mgn
+	echo -e "0.0 LISTEN UDP ${port_dst}\n$((sec+60)).0 IGNORE UDP ${port_dst}\n" > script_listen_t.mgn
 
 	if [[ "$server" = true ]]; then
 		mgen input script_listen_t.mgn output "$outfile" &> /dev/null &
@@ -157,11 +157,9 @@ fi
 
 if [[ "$server" = true ]]; then
 
-	sleep 10
-
 	for i in $(seq "${NUM_FLOWS}")
 	do
-		echo -e "60.0 ON $i UDP SRC ${port_src} DST $destination/${port_dst} PERIODIC [$pack_per_second $bytes_per_packet]\n$((sec+60)).0 OFF $i" >> script_send_t.mgn
+		echo -e "30.0 ON $i UDP SRC ${port_src} DST $destination/${port_dst} PERIODIC [$pack_per_second $bytes_per_packet]\n$((sec+30)).0 OFF $i" >> script_send_t.mgn
 	done
 
 	mgen input script_send_t.mgn &> /dev/null
