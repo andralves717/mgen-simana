@@ -153,7 +153,7 @@ END {
   }
 
   if (nflows != "" && pps != "" && size != "" && dur != ""){
-    printf "localhost, localhost, %d, %d, %d, %d, %10.2f, %10.2f, %10.2f, %10.2f, %10.2f, %10.2f, %2.2f, %d, %d\n", nflows, pps, size, dur, total_avg_latency, min_lat, max_lat, total_avg_jitter, min_jitt, max_jitt, (1-(received/total)), received, total;
+    printf "%s, %s, %d, %d, %d, %d, %10.2f, %10.2f, %10.2f, %10.2f, %10.2f, %10.2f, %2.2f, %d, %d\n", src, dest, nflows, pps, size, dur, total_avg_latency, min_lat, max_lat, total_avg_jitter, min_jitt, max_jitt, (1-(received/total)), received, total;
   } else {
     printf "Latency:\nAvg: %11.9f, Min: %11.9f, Max: %11.9f\n", total_avg_latency, min_lat, max_lat;
     printf "Jitter:\nAvg: %11.9f, Min: %11.9f, Max: %11.9f\n", total_avg_jitter, min_jitt, max_jitt;
