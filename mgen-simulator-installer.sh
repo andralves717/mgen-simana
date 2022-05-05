@@ -9,7 +9,7 @@ fi
 if [[ ! ":$PATH:" == *":$INSTALL_PATH:"* ]]; then
     touch $HOME/.pam_environment
     mkdir -p $INSTALL_PATH
-    echo "PATH DEFAULT=\${PATH}:$INSTALL_PATH" >> $HOME/.pam_environment
+    echo "PATH=\${PATH}:$INSTALL_PATH" >> $HOME/.profile
     echo "Relog and the rerun ./mgen-simulator-install.sh"
 
 else
