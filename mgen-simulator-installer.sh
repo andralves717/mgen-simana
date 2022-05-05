@@ -9,12 +9,10 @@ fi
 if [[ ! ":$PATH:" == *":$INSTALL_PATH:"* ]]; then
     touch $HOME/.pam_environment
     mkdir -p $INSTALL_PATH
-    echo "PATH=\${PATH}:$INSTALL_PATH" >> $HOME/.profile
     echo "Relog and the rerun ./mgen-simulator-install.sh"
 
-else
+fi
     [[ ! -d "$INSTALL_PATH" ]] && mkdir -p "$INSTALL_PATH"
-
 
     chmod +x mgen-simulator.sh
     chmod +x analyze_latency_jitter_mgen.awk
@@ -25,4 +23,3 @@ else
     cp analyze_latency_jitter_mgen.awk $INSTALL_PATH/analyze_latency_jitter_mgen
     cp analyze_latency_jitter_mgen_seq.awk $INSTALL_PATH/analyze_latency_jitter_mgen_seq
     cp analyze_latency_jitter_mgen_seg.awk $INSTALL_PATH/analyze_latency_jitter_mgen_seg
-fi
