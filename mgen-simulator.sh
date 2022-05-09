@@ -147,7 +147,7 @@ if [[ "$client" = true ]]; then
 	if [[ "$server" = true ]]; then
 		mgen input script_listen_t.mgn output "$outfile" &> /dev/null &
 	else 
-		mgen input script_listen_t.mgn output "$outfile" &> /dev/null
+		mgen input script_listen_t.mgn output "$outfile" &> listen.log
 	fi
 
 	
