@@ -15,11 +15,13 @@ fi
     [[ ! -d "$INSTALL_PATH" ]] && mkdir -p "$INSTALL_PATH"
 
     chmod +x mgen-simulator.sh
+    chmod +x diffclock.sh
     chmod +x analyze_latency_jitter_mgen.awk
     chmod +x analyze_latency_jitter_mgen_seq.awk
     chmod +x analyze_latency_jitter_mgen_seg.awk
 
     cp mgen-simulator.sh $INSTALL_PATH/mgen-simulator
+    cp diffclock.sh $INSTALL_PATH/diffclock
     cp analyze_latency_jitter_mgen.awk $INSTALL_PATH/analyze_latency_jitter_mgen
     cp analyze_latency_jitter_mgen_seq.awk $INSTALL_PATH/analyze_latency_jitter_mgen_seq
     cp analyze_latency_jitter_mgen_seg.awk $INSTALL_PATH/analyze_latency_jitter_mgen_seg
