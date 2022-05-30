@@ -58,7 +58,7 @@ done
 
 while (( sec > 0 ))
 do
-    nice -n -19 clockdiff -o "$source" &>> "$outfile" &
+    nice -n -16 clockdiff -o "$source" &>> "$outfile" &
     ((sec -= 1))
     sleep 1
 done
