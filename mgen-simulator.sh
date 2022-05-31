@@ -151,7 +151,7 @@ if [[ "$client" = true ]]; then
 
 	# diffclock --source "$source" --duration "$((sec+60))" &> /dev/null &
 
-	clockdiff_client "$source" >> /data/clockdiff.csv
+	clockdiff_client "$source" >> /data/clockdiff.csv &
 
 	if [[ "$server" = true ]]; then
 		mgen input script_listen_t.mgn output "$outfile" &> /dev/null &
@@ -166,7 +166,7 @@ fi
 
 if [[ "$server" = true ]]; then
 
-	clockdiff_server
+	clockdiff_server &
 
 	for i in $(seq "${NUM_FLOWS}")
 	do
