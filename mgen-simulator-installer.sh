@@ -16,8 +16,6 @@ fi
 
     chmod +x mgen-simulator.sh
     chmod +x diffclock.sh
-    chmod +x clockdiff_client.py
-    chmod +x clockdiff_server.py
     chmod +x analyze_latency_jitter_mgen.awk
     chmod +x analyze_latency_jitter_mgen_seq.awk
     chmod +x analyze_latency_jitter_mgen_seg.awk
