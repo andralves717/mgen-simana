@@ -150,7 +150,9 @@ if [[ "$client" = true ]]; then
 	echo -e "0.0 LISTEN UDP ${port_dst}\n$((sec+60)).0 IGNORE UDP ${port_dst}\n" > script_listen_t.mgn
 
 	# diffclock --source "$source" --duration "$((sec+60))" &> /dev/null &
-
+	
+	sleep 1
+	
 	clockdiff_client "$source" >> /data/clockdiff.csv &
 
 	if [[ "$server" = true ]]; then
