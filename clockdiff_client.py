@@ -15,7 +15,7 @@ import sys
 
 # HOST = '68.183.74.132'
 HOST = sys.argv[0]
-PORT = 1234
+PORT = 31048
 
 RTT_ITERS = 1000
 SLEEP_T   = 0.0001

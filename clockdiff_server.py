@@ -11,7 +11,7 @@ import threading
 import socket                                                                                                                                                                                                        
                                                                                                                                                                                                                      
 HOST = ''                 # Symbolic name meaning all available interfaces                                                                                                                                           
-PORT = 1234               # Arbitrary non-privileged port                                                                                                                                                            
+PORT = 31048              # Arbitrary non-privileged port                                                                                                                                                            
                                                                                                                                                                                                                      
 RTT_ITERS = 1000                                                                                                                                                                                                     
                                                                                                                                                                                                                      
