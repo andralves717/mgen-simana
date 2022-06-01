@@ -7,7 +7,7 @@ sec=30
 pack_per_second=10
 bytes_per_packet=256
 destination=127.0.0.1
-source=127.0.0.1
+sources=127.0.0.1
 port_src=5000
 port_dst=5000
 server=true
@@ -29,7 +29,7 @@ Usage() {
 		  --duration <time in sec>      - Set the duration of the program.
 		  --pps <Packets per second>    - Set the number of packets per second.
 		  --bytes <Number of bytes>     - Set the number of bytes per packet.
-		  --source <IP address>			- Set the source IP of the packet.
+		  --sources <IP address>			- Set the sources IP of the packet.
 		  --destination <IP address>	- Set the destination IP of the packet.
 		  --port_src <port>				- Set the source port.
 		  --port_dst <port>				- Set the destination port.
@@ -105,9 +105,9 @@ while [[ -n $1 ]]; do
 		--outfile)
 			shift
 			outfile=$1;;
-		--source)
+		--sources)
 			shift
-			source=$1;;
+			sources=$1;;
 		--destination)
 			shift
 			destination=$1;;
@@ -149,11 +149,11 @@ if [[ "$client" = true ]]; then
 
 	echo -e "0.0 LISTEN UDP ${port_dst}\n$((sec+60)).0 IGNORE UDP ${port_dst}\n" > script_listen_t.mgn
 
-	# diffclock --source "$source" --duration "$((sec+60))" &> /dev/null &
+	# diffclock --sources "$sources" --duration "$((sec+60))" &> /dev/null &
 	
 	sleep 5
 	
-	clockdiff_client "$source" >> /data/clockdiff.csv &
+	clockdiff_client "$sources" >> /data/clockdiff.csv &
 
 	if [[ "$server" = true ]]; then
 		mgen input script_listen_t.mgn output "$outfile" &> /dev/null &
@@ -185,7 +185,7 @@ if [[ "$client" = true ]]; then
 
 	rm script_listen_t.mgn
 
-	analyze_latency_jitter_mgen_seq -v nflows="$NUM_FLOWS" -v pps="$pack_per_second" -v dur="$sec" -v size="$bytes_per_packet" -v src="$source" -v dest="$destination" "$outfile"
+	analyze_latency_jitter_mgen_seq -v nflows="$NUM_FLOWS" -v pps="$pack_per_second" -v dur="$sec" -v size="$bytes_per_packet" -v src="$sources" -v dest="$destination" "$outfile"
 
 	if [[ "$keep_drc" = false ]]; then
 		rm "$outfile"
