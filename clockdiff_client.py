@@ -17,7 +17,8 @@ import sys
 HOST = sys.argv[1]
 PORT = 31048
 
-EXECEUTION_TIME = sys.argv[2]
+EXECEUTION_TIME = int(sys.argv[2])
+print(EXECEUTION_TIME)
 INITIAL_TIME = time.time()
 
 RTT_ITERS = 1000
