@@ -83,6 +83,7 @@ def __clockdiff(s, rtt):
 def main():
     s   = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
     rtt = __measure_rtt(s)
+    print(rtt)
     __clockdiff(s, rtt)
     s.close()
 
