@@ -28,7 +28,9 @@ def main():
                                                                                                                                                                                                                      
     # Measuring Clock offset                                                                                                                                                                                         
     while True:                                                                                                                                                                                                      
-        data, addr = s.recvfrom(4096)                                                                                                                                                                                
+        data, addr = s.recvfrom(4096)
+        if (data.decode() == "STOP"):
+            break                                                                                                                                                                                
         local_ts     = int(time.time() * 1000000)                                                                                                                                                                    
         remote_ts    = int.from_bytes(data, byteorder='big', signed=False)                                                                                                                                           
         delta        = (local_ts - remote_ts)                                                                                                                                                                        

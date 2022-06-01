@@ -17,6 +17,9 @@ import sys
 HOST = sys.argv[1]
 PORT = 31048
 
+EXECEUTION_TIME = sys.argv[2]
+INITIAL_TIME = time.time()
+
 RTT_ITERS = 1000
 SLEEP_T   = 0.0001
 
@@ -68,6 +71,11 @@ def __clockdiff(s, rtt):
             data, address = s.recvfrom(4096)
             delta = int.from_bytes(data, byteorder='big', signed=True)
             print(f"{time.time()*1000000} {delta - (rtt / 2)}")
+
+            if(time.time() - INITIAL_TIME >= EXECEUTION_TIME):
+                s.sendto("STOP".encode(), (HOST, PORT))
+                break
+
             #print(f"{delta},{rtt}")
         except:
             print(f"FUCK")
