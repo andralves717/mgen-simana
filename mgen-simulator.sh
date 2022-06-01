@@ -185,6 +185,8 @@ if [[ "$client" = true ]]; then
 
 	if [[ "$keep_drc" = false ]]; then
 		rm "$outfile"
+	else
+		mv "$outfile" /data/"$outfile"
 	fi
 fi
 
