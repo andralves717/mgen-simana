@@ -66,7 +66,7 @@ def __clockdiff(s, rtt):
             s.settimeout(2)
 
             data, address = s.recvfrom(4096)
-            delta = int.from_bytes(data, byteorder='big', signed=False)
+            delta = int.from_bytes(data, byteorder='big', signed=True)
             print(f"{time.time()*1000000} {delta - (rtt / 2)}")
             #print(f"{delta},{rtt}")
         except:
