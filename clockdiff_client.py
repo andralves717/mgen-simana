@@ -73,7 +73,7 @@ def __clockdiff(s, rtt):
             print(f"{time.time()*1000000} {delta - (rtt / 2)}")
 
             if(time.time() - INITIAL_TIME >= EXECEUTION_TIME):
-                s.sendto("STOP".encode(), (HOST, PORT))
+                s.sendto(b'S', (HOST, PORT))
                 break
 
             #print(f"{delta},{rtt}")
