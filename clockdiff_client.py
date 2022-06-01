@@ -14,7 +14,7 @@ import statistics
 import sys
 
 # HOST = '68.183.74.132'
-HOST = sys.argv[0]
+HOST = sys.argv[1]
 PORT = 31048
 
 RTT_ITERS = 1000
