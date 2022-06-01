@@ -63,8 +63,8 @@ def __measure_rtt(s):
 def __clockdiff(s, rtt):
     while True:
         time.sleep(SLEEP_T)
-        try:
-        #if True:
+        # try:
+        if True:
             s.sendto(int(time.time() * 1000000).to_bytes(128 // 8, byteorder='big'), (HOST, PORT))
             s.settimeout(2)
 
@@ -77,8 +77,8 @@ def __clockdiff(s, rtt):
                 break
 
             #print(f"{delta},{rtt}")
-        except:
-            print(f"FUCK")
+        # except:
+        #     print(f"FUCK")
 
 def main():
     s   = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
