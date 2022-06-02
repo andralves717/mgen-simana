@@ -180,7 +180,7 @@ if [[ "$client" = true ]]; then
 
 	correct_sent_timestamp /data/clockdiff.csv "$outfile".tmp "$outfile".csv
 
-	analyze_latency_jitter_clockdiff_mgen_seq -v nflows="$NUM_FLOWS" -v pps="$pack_per_second" -v dur="$sec" -v size="$bytes_per_packet" -v src="$sources" -v dest="$destination" "$outfile".csv
+	analyze_latency_jitter_mgen_clockdiff_seq -v nflows="$NUM_FLOWS" -v pps="$pack_per_second" -v dur="$sec" -v size="$bytes_per_packet" -v src="$sources" -v dest="$destination" "$outfile".csv
 
 	if [[ "$keep_drc" = false ]]; then
 		rm "$outfile"

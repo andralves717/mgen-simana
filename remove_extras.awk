@@ -16,6 +16,6 @@ $2 ~ /RECV/ {
   split($8, sent, />/);
   sent_time = mgen_ts_to_microseconds(sent[2]);
 
-# SENT RECV FLOW SEQ
+# MGEN SENT RECV FLOW SEQ
   printf "MGEN %d %d %d %d\n", sent_time, recv_time, flow[2], seq[2];
 }
