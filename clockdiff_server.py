@@ -38,7 +38,7 @@ def main():
         delta        = (local_ts - remote_ts)                                   # server timestamp - client timestamp
         # data         = delta.to_bytes(128 // 8, byteorder='big', signed=True)
         # data2        = local_ts.to_bytes(128 // 8,  byteorder='big', signed=False)
-        data = [delta, local_ts].to_bytes(128 // 8, byteorder='big', signed=True)
+        data = str([delta, local_ts]).encode()
         s.sendto(data, addr)
         
 if __name__ == "__main__":

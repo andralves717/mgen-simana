@@ -72,7 +72,7 @@ def __clockdiff(s, rtt):
             s.settimeout(2)
 
             data, address   = s.recvfrom(4096)
-            delta, server_ts = list.from_bytes(data, byteorder='big', signed=True)
+            delta, server_ts = eval(data.decode('utf-8'))
             # delta           = int.from_bytes(data, byteorder='big', signed=True)  # delta = server timestamp - client timestamp
             print(delta)
             # server_ts       = int.from_bytes(data2, byteorder='big', signed=False)
