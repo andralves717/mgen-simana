@@ -29,7 +29,7 @@ Usage() {
 		  --duration <time in sec>      - Set the duration of the program.
 		  --pps <Packets per second>    - Set the number of packets per second.
 		  --bytes <Number of bytes>     - Set the number of bytes per packet.
-		  --sources <IP address>			- Set the sources IP of the packet.
+		  --sources <IP address>		- Set the sources IP of the packet.
 		  --destination <IP address>	- Set the destination IP of the packet.
 		  --port_src <port>				- Set the source port.
 		  --port_dst <port>				- Set the destination port.
@@ -148,8 +148,6 @@ if [[ "$client" = true ]]; then
 	fi
 
 	echo -e "0.0 LISTEN UDP ${port_dst}\n$((sec+60)).0 IGNORE UDP ${port_dst}\n" > script_listen_t.mgn
-
-	# diffclock --sources "$sources" --duration "$((sec+60))" &> /dev/null &
 	
 	clockdiff_client "$sources" $((sec+30)) >> /data/clockdiff.csv &
 
@@ -158,9 +156,6 @@ if [[ "$client" = true ]]; then
 	else 
 		mgen input script_listen_t.mgn output "$outfile" &> /dev/null
 	fi
-
-	
-	# mgen input script_listen_t.mgn
 
 fi
 
@@ -188,6 +183,8 @@ if [[ "$client" = true ]]; then
 	else
 		mv "$outfile" /data/"$outfile"
 	fi
+
+	rm /dev/clockdiff.csv
 fi
 
 if [[ "$server" = true ]]; then

@@ -9,6 +9,8 @@ v1 -- very simply approach
 '''
 
 import time
+from datetime import date, datetime
+import calendar
 import socket
 import statistics
 import sys
@@ -19,6 +21,7 @@ PORT = 31048
 
 EXECEUTION_TIME = int(sys.argv[2])
 INITIAL_TIME = time.time()
+DAY = calendar.timegm(date.today().timetuple())
 
 RTT_ITERS = 1000
 SLEEP_T   = 0.0001
@@ -70,7 +73,11 @@ def __clockdiff(s, rtt):
 
             data, address = s.recvfrom(4096)
             delta = int.from_bytes(data, byteorder='big', signed=True)
-            print(f"{time.time()*1000000} {delta - (rtt / 2)}")
+
+            timestamp = int(int((time.time() - DAY)*1000000))
+            offset = int(delta - (rtt / 2))
+
+            print(f"{timestamp} {offset}")
 
             if(time.time() - INITIAL_TIME >= EXECEUTION_TIME):
                 s.sendto(b'S', (HOST, PORT))
