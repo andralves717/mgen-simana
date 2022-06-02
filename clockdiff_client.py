@@ -74,9 +74,7 @@ def __clockdiff(s, rtt):
             data, address   = s.recvfrom(4096)
             delta, server_ts = eval(data.decode('utf-8'))
             # delta           = int.from_bytes(data, byteorder='big', signed=True)  # delta = server timestamp - client timestamp
-            print(delta)
             # server_ts       = int.from_bytes(data2, byteorder='big', signed=False)
-            # print(timestamp)
             timestamp       = int(server_ts - (DAY*1000000))
             offset          = int(delta - (rtt / 2))                             # offset = delta - (rtt/2)
 
