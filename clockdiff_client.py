@@ -72,12 +72,13 @@ def __clockdiff(s, rtt):
             s.settimeout(2)
 
             data, address = s.recvfrom(4096)
+            data2, address = s.recvfrom(4096)
             delta = int.from_bytes(data, byteorder='big', signed=True)  # delta = server timestamp - client timestamp
-
-            timestamp = int(int((time.time() - DAY)*1000000))
+            server_ts = int.from_bytes(data2, byteorder='big', signed=False)
+            timestamp = int(server_ts - (DAY*1000000))
             offset = int(delta - (rtt / 2))                             # offset = delta - (rtt/2)
 
-            print(f"{timestamp} {offset}")                              # server true timestamp ≃ server timestamp - offset ≃ client timestamp
+            print(f"OFFSET {timestamp} {offset}")                              # server true timestamp ≃ server timestamp - offset ≃ client timestamp
 
             if(time.time() - INITIAL_TIME >= EXECEUTION_TIME):
                 s.sendto(b'S', (HOST, PORT))
@@ -90,7 +91,6 @@ def __clockdiff(s, rtt):
 def main():
     s   = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
     rtt = __measure_rtt(s)
-    print(rtt)
     __clockdiff(s, rtt)
     s.close()
 
