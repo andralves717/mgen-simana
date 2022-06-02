@@ -36,10 +36,10 @@ def main():
         local_ts     = int(time.time() * 1000000)
         remote_ts    = int.from_bytes(data, byteorder='big', signed=False)
         delta        = (local_ts - remote_ts)                                   # server timestamp - client timestamp
-        data         = delta.to_bytes(128 // 8, byteorder='big', signed=True)
-        data2        = local_ts.to_bytes(128 // 8,  byteorder='big', signed=False)
+        # data         = delta.to_bytes(128 // 8, byteorder='big', signed=True)
+        # data2        = local_ts.to_bytes(128 // 8,  byteorder='big', signed=False)
+        data = [delta, local_ts].to_bytes(128 // 8, byteorder='big', signed=True)
         s.sendto(data, addr)
-        s.sendto(data2, addr)
         
 if __name__ == "__main__":
     main()
