@@ -184,7 +184,7 @@ if [[ "$client" = true ]]; then
 	analyze_latency_jitter_mgen_clockdiff_seq -v nflows="$NUM_FLOWS" -v pps="$pack_per_second" -v dur="$sec" -v size="$bytes_per_packet" -v src="$sources" -v dest="$destination" /data/"$outfile".csv
 
 	if [[ "$keep_drc" = false ]]; then
-		rm "$outfile"
+		rm "$outfile" /data/"$clockdiff_file" /data/"$outfile".tmp /data/"$outfile".csv
 	else
 		mv "$outfile" /data/"$outfile"
 	fi
