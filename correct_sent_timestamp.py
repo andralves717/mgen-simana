@@ -35,9 +35,11 @@ def main():
 
                 ts = closest(timestamps, sent)
 
-                wf.write(f"MGEN {sent - ts} {l[2]} {l[3]} {l[4]}\n")
+                offset = offsets[idx][ts]
+
+                wf.write(f"MGEN {sent - offset} {l[2]} {l[3]} {l[4]}\n")
             else:
-                print("No timestamp in coiso")
+                print(f"Server timestamp: {sent}\t ")
 
     wf.close()
 
