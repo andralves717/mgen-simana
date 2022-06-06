@@ -177,11 +177,11 @@ if [[ "$client" = true ]]; then
 
 	rm script_listen_t.mgn
 
-	remove_extras "$outfile" >> "$outfile".tmp
+	remove_extras "$outfile" >> /data/"$outfile".tmp
 
-	correct_sent_timestamp /data/"$clockdiff_file" "$outfile".tmp "$outfile".csv
+	correct_sent_timestamp /data/"$clockdiff_file" /data/"$outfile".tmp /data/"$outfile".csv
 
-	analyze_latency_jitter_mgen_clockdiff_seq -v nflows="$NUM_FLOWS" -v pps="$pack_per_second" -v dur="$sec" -v size="$bytes_per_packet" -v src="$sources" -v dest="$destination" "$outfile".csv
+	analyze_latency_jitter_mgen_clockdiff_seq -v nflows="$NUM_FLOWS" -v pps="$pack_per_second" -v dur="$sec" -v size="$bytes_per_packet" -v src="$sources" -v dest="$destination" /data/"$outfile".csv
 
 	if [[ "$keep_drc" = false ]]; then
 		rm "$outfile"
