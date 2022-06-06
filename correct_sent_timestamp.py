@@ -31,7 +31,7 @@ def main():
             sent = int(l[1])
             idx = int(sent/10000)
             if idx in offsets.keys():
-                timestamps = offsets[idx].keys()
+                timestamps = list(offsets[idx].keys())
 
                 ts = closest(timestamps, sent)
 
