@@ -28,7 +28,7 @@ def main():
     with open(MGEN_FILENAME, "rt", encoding="utf-8") as f:
         for line in f.readlines():
             l = line.split()
-            sent = l[1]
+            sent = int(l[1])
             idx = int(sent/10000)
             if idx in offsets.keys():
                 timestamps = offsets[idx].keys()
