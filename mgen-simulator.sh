@@ -150,7 +150,7 @@ if [[ "$client" = true ]]; then
 
 	echo -e "0.0 LISTEN UDP ${port_dst}\n$((sec+60)).0 IGNORE UDP ${port_dst}\n" > script_listen_t.mgn
 	
-	clockdiff_client "$sources" $((sec+30)) >> /data/"$clockdiff_file" &
+	clockdiff_client "$sources" $((sec+60)) >> /data/"$clockdiff_file" &
 
 	if [[ "$server" = true ]]; then
 		mgen input script_listen_t.mgn output "$outfile" &> /dev/null &
