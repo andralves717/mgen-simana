@@ -139,7 +139,7 @@ if [[ "$client" = true ]]; then
 
 	if [[ -z $outfile ]]; then
 		outfile="./out_f${NUM_FLOWS}_pps${pack_per_second}_b${bytes_per_packet}_s${sec}.drc"
-		clockdiff_file="./out_f${NUM_FLOWS}_pps${pack_per_second}_b${bytes_per_packet}_s${sec}.csv"
+		clockdiff_file="out_f${NUM_FLOWS}_pps${pack_per_second}_b${bytes_per_packet}_s${sec}.csv"
 	fi
 
 	if [[ $outfile == */* ]]; then
@@ -150,12 +150,13 @@ if [[ "$client" = true ]]; then
 
 	echo -e "0.0 LISTEN UDP ${port_dst}\n$((sec+60)).0 IGNORE UDP ${port_dst}\n" > script_listen_t.mgn
 	
-	clockdiff_client "$sources" $((sec+70)) >> /data/"$clockdiff_file" &
+	clockdiff_client "$sources" $((sec+62)) >> /data/"$clockdiff_file" &
 
 	if [[ "$server" = true ]]; then
 		mgen input script_listen_t.mgn output "$outfile" &> /dev/null &
 	else 
 		mgen input script_listen_t.mgn output "$outfile" &> /dev/null
+		sleep 2
 	fi
 
 fi
