@@ -15,7 +15,9 @@ function mgen_ts_to_microseconds(ts) {
 function abs(v) {return v < 0 ? -v : v}
 
 BEGIN {
-  first = 1;
+  for (i = 1; i< nflows; i++){
+    first[i]=1;
+  }
   # time_to_wait = 10000000;
   seq_init = pps * 10;
 }
@@ -29,12 +31,6 @@ $2 ~ /RECV/ {
   sent_time = mgen_ts_to_microseconds(sent[2]);
 
   if( seq[2] >= seq_init) {
-
-    # maybe split this into a function with problem handling
-    if (first == 0) {
-      prev_latency[flow[2]] = latency;
-    } 
-
     # keep package count to be independent of reordered packets
     count[flow[2]]++;
 
@@ -62,7 +58,7 @@ $2 ~ /RECV/ {
       avg_latency[flow[2]] = (avg_latency[flow[2]] * (count[flow[2]] - 1) + latency) / count[flow[2]];
     }
 
-    if (first == 0) {
+    if (first[flow[2]] == 0) {
       jitter = abs(latency - prev_latency[flow[2]]);
     
 
@@ -103,7 +99,8 @@ $2 ~ /RECV/ {
       }
     }
     flows[flow[2]]++;
-    first = 0;
+    first[flow[2]] = 0;
+    prev_latency[flow[2]] = latency;
   }
 }
 

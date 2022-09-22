@@ -8,7 +8,9 @@
 function abs(v) {return v < 0 ? -v : v}
 
 BEGIN {
-  first = 1;
+  for (i = 1; i< nflows; i++){
+    first[i]=1;
+  }
   # time_to_wait = 10000000;
   seq_init = pps * 10;
 }
@@ -20,7 +22,7 @@ $1 ~ /MGEN/ {
 
     # maybe split this into a function with problem handling
     if (first == 0) {
-      prev_latency[$4] = latency;
+      
     } 
 
     # keep package count to be independent of reordered packets
@@ -50,7 +52,7 @@ $1 ~ /MGEN/ {
       avg_latency[$4] = (avg_latency[$4] * (count[$4] - 1) + latency) / count[$4];
     }
 
-    if (first == 0) {
+    if (first[$4] == 0) {
       jitter = abs(latency - prev_latency[$4]);
     
 
@@ -91,7 +93,8 @@ $1 ~ /MGEN/ {
       }
     }
     flows[$4]++;
-    first = 0;
+    first[$4] = 0;
+    prev_latency[$4] = latency;
   }
 }
 
