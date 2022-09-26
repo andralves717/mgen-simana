@@ -20,11 +20,6 @@ $1 ~ /MGEN/ {
 
   if( $5 >= seq_init) {
 
-    # maybe split this into a function with problem handling
-    if (first == 0) {
-      
-    } 
-
     # keep package count to be independent of reordered packets
     count[$4]++;
 
