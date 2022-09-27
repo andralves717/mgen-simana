@@ -150,6 +150,8 @@ if [[ "$client" = true ]]; then
 
 	echo -e "0.0 LISTEN UDP ${port_dst}\n$((sec+60)).0 IGNORE UDP ${port_dst}\n" > script_listen_t.mgn
 	
+	rm -f /data/"$clockdiff_file"
+
 	clockdiff_client "$sources" $((sec+64)) >> /data/"$clockdiff_file" &
 
 	if [[ "$server" = true ]]; then
@@ -185,7 +187,7 @@ if [[ "$client" = true ]]; then
 	analyze_latency_jitter_mgen_clockdiff_seq -v nflows="$NUM_FLOWS" -v pps="$pack_per_second" -v dur="$sec" -v size="$bytes_per_packet" -v src="$sources" -v dest="$destination" /data/"$outfile".csv
 
 	if [[ "$keep_drc" = false ]]; then
-		rm "$outfile" /data/"$clockdiff_file" /data/"$outfile".tmp /data/"$outfile".csv
+		rm -f "$outfile" /data/"$clockdiff_file" /data/"$outfile".tmp /data/"$outfile".csv
 	else
 		mv "$outfile" /data/"$outfile"
 	fi
